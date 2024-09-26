@@ -4,8 +4,57 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Solar Power Analysis</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
 </head>
 <body>
+
+<div>
+    <script>
+        //Create 750x750px SVG
+        const svg = d3.select("div")
+                      .append("svg")
+                      .attr("width", 750)
+                      .attr("height", 750)
+                      .attr("fill", "black")
+                      .attr("opacity", "0.5");
+
+        const width = svg.attr('width');
+        const height = svg.attr('height');
+        const margins = {top:10, right:10, bottom:50, left:50};
+        const chartWidth = width - margins.left - margins.right;
+        const chartHeight = height - margins.top - margins.bottom;
+
+        //Append rect for chart background
+        svg.append('rect')
+           .attr("width", chartWidth)
+           .attr("height", chartHeight);
+
+        //Designate area that chart will be on
+        let chartArea = svg.append('g')
+                           .attr('transform', `translate(${margins.left},${margins.top})`);
+
+        //Load the data files with d3.csv (we'll need to figure out what data needs to be read together)                  
+        d3.csv("Plant_1_Generation_Data.csv")
+          .then((data) => {
+            console.log(data);
+        })
+
+        d3.csv("Plant_1_Weather_Sensor_Data.csv")
+          .then((data) => {
+            console.log(data);
+        })
+
+        d3.csv("Plant_1_Weather_Sensor_Data.csv")
+          .then((data) => {
+            console.log(data);
+        })
+
+        d3.csv("Plant_1_Weather_Sensor_Data.csv")
+          .then((data) => {
+            console.log(data);
+        })
+    </script>
+</div>
     
 </body>
 </html>
