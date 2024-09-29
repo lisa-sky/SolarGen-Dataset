@@ -5,18 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Solar Power Analysis</title>
     <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+    
+    .gridlines line {
+      stroke: #bbb;
+    }
+    
+    .gridlines .domain {
+      stroke: none;
+    }
+  
+    </style>
 </head>
 <body>
 
 <div>
+
+      <svg id="scatterplot" height="750" width="750">
+        <g class="y gridlines" stroke: #bbb;> </g>
+        <g class="x gridlines" stroke: #bbb;></g>
+    </svg>
+
     <script>
         //Create 750x750px SVG
-        const svg = d3.select("div")
-                      .append("svg")
-                      .attr("width", 750)
-                      .attr("height", 750)
-                      .attr("fill", "black")
-                      .attr("opacity", "0.5");
+        let svg = d3.select('#scatterplot');
 
         const width = svg.attr('width');
         const height = svg.attr('height');
@@ -24,35 +36,100 @@
         const chartWidth = width - margins.left - margins.right;
         const chartHeight = height - margins.top - margins.bottom;
 
-        //Append rect for chart background
-        svg.append('rect')
-           .attr("width", chartWidth)
-           .attr("height", chartHeight);
-
         //Designate area that chart will be on
         let chartArea = svg.append('g')
                            .attr('transform', `translate(${margins.left},${margins.top})`);
 
         //Load the data files with d3.csv (we'll need to figure out what data needs to be read together)                  
-        d3.csv("Plant_1_Generation_Data.csv")
-          .then((data) => {
-            console.log(data);
-        })
+        //load the following files togehter
+        Promise.all([
+              d3.csv("Plant_1_Generation_Data.csv"),
+              d3.csv("Plant_1_Weather_Sensor_Data.csv"),
+              d3.csv("Plant_2_Generation_Data.csv"),
+              d3.csv("Plant_2_Weather_Sensor_Data.csv"),
+          ]).then((data) =>  {
+              console.log(data);
 
-        d3.csv("Plant_1_Weather_Sensor_Data.csv")
-          .then((data) => {
-            console.log(data);
-        })
+              //Extract module temperature and yield data columns from data arrays
 
-        d3.csv("Plant_1_Weather_Sensor_Data.csv")
-          .then((data) => {
-            console.log(data);
-        })
+              let plant1_module_temperature_data = data[1].map(row => row.MODULE_TEMPERATURE);
+              let plant2_module_temperature_data = data[3].map(row => row.MODULE_TEMPERATURE);
+              let plant1_total_yield_data = data[0].map(row => row.TOTAL_YIELD);
+              let plant2_total_yield_data = data[2].map(row => row.TOTAL_YIELD);
 
-        d3.csv("Plant_1_Weather_Sensor_Data.csv")
-          .then((data) => {
-            console.log(data);
-        })
+              //Check to make sure the extracted column data is accurate
+              console.log(plant1_module_temperature_data);
+              console.log(plant1_total_yield_data);
+              console.log(plant2_module_temperature_data);
+              console.log(plant2_total_yield_data);
+
+              //Combine the extracted columns into a new combined dataset
+              let CombinedDataset = [];
+
+              plant1_module_temperature_data.forEach((temp, index) => {
+                CombinedDataset.push({
+                  plant: 'Plant 1',
+                  module_temperature: plant1_module_temperature_data[index],
+                  total_yield: plant1_total_yield_data[index]
+                });
+
+                CombinedDataset.push({
+                  plant: 'Plant 2',
+                  module_temperature: plant2_module_temperature_data[index],
+                  total_yield: plant2_total_yield_data[index]
+                });
+              });
+            
+            //Check to make sure the new combined dataset looks accurate
+
+              console.log(CombinedDataset);
+
+              // 2. Build some scales for Plant 1 in isolation
+                const sample1_Extent = d3.extent(plant1_module_temperature_data)
+                console.log(sample1_Extent);               
+                      
+
+                const sample2_Extent = d3.extent(plant1_total_yield_data)
+                console.log(sample2_Extent);  
+
+               // 2. Build some scales for CombinedDataset
+                const xExtent = d3.extent(CombinedDataset, d => d["module_temperature"])
+                const xScale = d3.scaleLinear().domain(xExtent)
+                                               .range([0, chartWidth]);
+                console.log(xExtent);               
+                      
+
+                const yExtent = d3.extent(CombinedDataset, d => d["total_yield"])
+                const yScale = d3.scaleLog().domain(yExtent)
+                                            .range([chartHeight, 0]); 
+                console.log(yExtent);         
+
+                // 2. Build some axises
+                let leftAxis = d3.axisLeft(yScale);
+                svg.append("g")
+                    .attr("class", "y axis")
+                    .attr("transform", `translate(${margins.left - 10}, ${margins.top})`)
+                    .call(leftAxis);
+
+                let bottomAxis = d3.axisBottom(xScale);
+                svg.append("g")
+                    .attr("class", "x axis")
+                    .attr("transform", `translate(${margins.left}, ${margins.top + chartHeight + 10})`)
+                    .call(bottomAxis);
+                
+                let leftGridlines = d3.axisLeft(yScale).tickFormat('').tickSize(-chartWidth - 10)
+                    svg.append("g")
+                    .attr("class", "y gridlines")
+                    .attr("transform", `translate(${margins.left - 10}, ${margins.top})`)
+                    .call(leftGridlines);
+                
+                let bottomGridlines = d3.axisBottom(xScale).tickFormat('').tickSize(-chartHeight - 10).ticks(6);
+                    svg.append("g")
+                    .attr("class", "x gridlines")
+                    .attr("transform", `translate(${margins.left}, ${margins.top + chartHeight + 10})`)
+                    .call(bottomGridlines);
+          })
+
     </script>
 </div>
     
