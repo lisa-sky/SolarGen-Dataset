@@ -53,12 +53,12 @@
 
         //Extract module temperature and yield data columns from data arrays
 
-        let plant1_module_temperature_data = data[1].map(row => row.MODULE_TEMPERATURE);
-        let plant2_module_temperature_data = data[3].map(row => row.MODULE_TEMPERATURE);
-        let plant1_total_yield_data = data[0].map(row => row.TOTAL_YIELD);
-        let plant2_total_yield_data = data[2].map(row => row.TOTAL_YIELD);
-        let plant1_irradiation_data = data[1].map(row => row.IRRADIATION);
-        let plant2_irradiation_data = data[3].map(row => row.IRRADIATION);
+        let plant1_module_temperature_data = data[1].map(row => +row.MODULE_TEMPERATURE);
+        let plant2_module_temperature_data = data[3].map(row => +row.MODULE_TEMPERATURE);
+        let plant1_total_yield_data = data[0].map(row => +row.TOTAL_YIELD);
+        let plant2_total_yield_data = data[2].map(row => +row.TOTAL_YIELD);
+        let plant1_irradiation_data = data[1].map(row => +row.IRRADIATION);
+        let plant2_irradiation_data = data[3].map(row => +row.IRRADIATION);
 
         //Check to make sure the extracted column data is accurate
         console.log(plant1_module_temperature_data);
@@ -139,7 +139,7 @@
           .attr("transform", `translate(${margins.left}, ${margins.top + chartHeight + 10})`)
           .call(bottomGridlines);
 
-        data.forEach((d, i) => {
+        CombinedDataset.forEach((d, i) => {
 
           svg.append('circle')
             .attr('cx', xScale(d['module_temperature']))
