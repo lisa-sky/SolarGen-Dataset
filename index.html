@@ -110,11 +110,15 @@
         console.log(yExtent);
 
         const rExtent = d3.extent(CombinedDataset, d => d["irradiation"])
-        const rScale = d3.scaleLog().domain(rExtent)
+        const rScale = d3.scaleLinear().domain(rExtent)
           .range([5, 10]);
         console.log(rExtent);
 
-        // 2. Build some axises
+        const fillExtent = d3.extent(CombinedDataset, d => d["plant"]);
+        const fillScale = d3.scaleOrdinal(d3.scaleOrdinal()).domain(fillExtent).range(["red", "blue"]);
+        console.log(fillExtent);
+
+        // 3. Build some axises
         let leftAxis = d3.axisLeft(yScale);
         svg.append("g")
           .attr("class", "y axis")
@@ -139,16 +143,20 @@
           .attr("transform", `translate(${margins.left}, ${margins.top + chartHeight + 10})`)
           .call(bottomGridlines);
 
+        // 4. Add data points to chart
+
         CombinedDataset.forEach((d, i) => {
 
-          svg.append('circle')
+          chartArea.append('circle')
             .attr('cx', xScale(d['module_temperature']))
             .attr('cy', yScale(d['total_yield']))
             .attr('r', rScale(d['irradiation']))
             .attr('index', i)
-            .style('fill', d['plant']);
+            .style('fill', fillScale(d['plant']));
 
         });
+
+        chartArea.raise()
 
       });
 
