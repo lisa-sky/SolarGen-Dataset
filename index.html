@@ -115,7 +115,7 @@
         console.log(rExtent);
 
         const fillExtent = d3.extent(CombinedDataset, d => d["plant"]);
-        const fillScale = d3.scaleOrdinal(d3.scaleOrdinal()).domain(fillExtent).range(["red", "blue"]);
+        const fillScale = d3.scaleOrdinal(d3.scaleOrdinal()).domain(fillExtent).range(["red", "green"]);
         console.log(fillExtent);
 
         // 3. Build some axises
