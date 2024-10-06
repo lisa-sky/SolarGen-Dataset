@@ -14,13 +14,109 @@
     .gridlines .domain {
       stroke: none;
     }
+
+    svg {
+      overflow: visible;
+    }
+
+    .container {
+      display: flex;
+      align-items: flex-start;
+    }
+
+    .legend {
+    display: flex;
+    flex-direction: column; 
+    padding: 10px;
+    width: 300px;
+    height: 200px;
+    border: 1px solid black;
+    font-family: Courier;
+    margin-left: 30px;
+}
+
+.legendCaption {
+    text-align: center;
+    margin: 20px 0px 10px 0px;
+    font-weight: bold;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center; 
+    margin-bottom: 15px; 
+}
+
+.circle {
+    width: 20px; 
+    height: 20px; 
+    border-radius: 50%; 
+    margin-right: 10px; 
+}
+
+.red {
+    background-color: #fa928d;
+  
+}
+
+.green {
+    background-color: #a0c89b; 
+}
+
+.label {
+    font-size: 16px; 
+}
+
+.radius {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    margin: 15px 0px 10px 0px;
+}
+
+.radiusCaption {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+}
+
+.radiusLabel {
+    margin-right: 15px;
+    margin-top: 10px
+}
+
+.one {
+    width: 10px;
+    height:10px;
+    border-radius: 50%;
+    margin-right: 30px;
+    border: 1px solid black;
+}
+
+.two {
+    width: 15px;
+    height:15px;
+    border-radius: 50%;
+    margin-right: 30px;
+    border: 1px solid black;
+}
+
+.three {
+    width: 20px;
+    height:20px;
+    border-radius: 50%;
+    margin-right: 30px;
+    border: 1px solid black;
+}
+
+
   </style>
 </head>
 
 <body>
+<div class="container">
 
-  <div>
-
+  <div class="data">
     <script>
 
       //Create 750x750px SVG
@@ -166,6 +262,41 @@
 
     </script>
   </div>
+
+  <!-- legend -->
+
+    <div class="legend">
+      <div class="legend-item">
+          <span class="circle red"></span>
+          <span class="label">Plant 1</span>
+      </div>
+      <div class="legend-item">
+          <span class="circle green"></span>
+          <span class="label">Plant 2</span>
+      </div>
+  
+      <span class="iraadiation">Irradiation</span>
+  
+  <div class="radius">
+      <span class="one"></span>
+      <span class="two"></span>
+      <span class="three"></span>
+  </div>
+  
+  <div class="radiusCaption">
+      <span class="radiusLabel">0.0</span>
+      <span class="radiusLabel">0.5</span>
+      <span class="radiusLabel">1.0</span>
+  </div>
+  
+  
+  <div class="legendCaption">
+      <span>Solar Data Legend</span>
+    </div>
+  
+  </div>
+</div>
+
 
 </body>
 
