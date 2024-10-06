@@ -151,6 +151,9 @@
             .attr('cx', xScale(d['module_temperature']))
             .attr('cy', yScale(d['total_yield']))
             .attr('r', rScale(d['irradiation']))
+            .style('stroke', 'black')
+            .style('stroke-width', 0.75)
+            .style('stroke-opacity', 0.5)
             .attr('opacity', 0.25)
             .attr('index', i)
             .style('fill', fillScale(d['plant']));
