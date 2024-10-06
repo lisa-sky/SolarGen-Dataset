@@ -111,7 +111,7 @@
 
         const rExtent = d3.extent(CombinedDataset, d => d["irradiation"])
         const rScale = d3.scaleLinear().domain(rExtent)
-          .range([5, 10]);
+          .range([2, 10]);
         console.log(rExtent);
 
         const fillExtent = d3.extent(CombinedDataset, d => d["plant"]);
@@ -151,6 +151,7 @@
             .attr('cx', xScale(d['module_temperature']))
             .attr('cy', yScale(d['total_yield']))
             .attr('r', rScale(d['irradiation']))
+            .attr('opacity', 0.25)
             .attr('index', i)
             .style('fill', fillScale(d['plant']));
 
