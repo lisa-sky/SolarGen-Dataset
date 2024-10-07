@@ -31,6 +31,7 @@
     width: 300px;
     height: 200px;
     border: 1px solid black;
+    border-radius: 3px;
     font-family: Courier;
     margin-left: 30px;
 }
@@ -109,7 +110,10 @@
     border: 1px solid black;
 }
 
-
+.container {
+  width: 75%; 
+  margin: 0 auto; 
+}
   </style>
 </head>
 
@@ -238,6 +242,22 @@
           .attr("class", "x gridlines")
           .attr("transform", `translate(${margins.left}, ${margins.top + chartHeight + 10})`)
           .call(bottomGridlines);
+
+        //Add the y-axis label
+        chartArea.append("text")
+           .attr("class", "y label")
+           .attr("text-anchor", "middle")
+           .attr("font-weight", "bold")
+           .attr("transform", `translate(${margins.left - 100}, ${margins.top + chartHeight / 2}) rotate(-90)`)
+           .text("Total Energy Yield (kW)");
+
+        //Add the x-axis label
+        chartArea.append("text")
+          .attr("class", "x label")
+          .attr("text-anchor", "middle")
+          .attr("font-weight", "bold")
+          .attr("transform", `translate(${margins.left + chartWidth / 2}, ${margins.top + chartHeight + 40})`)
+          .text("Module Temperature (°C)");
 
         // 4. Add data points to chart
 
