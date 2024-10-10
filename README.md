@@ -1,1 +1,1 @@
-# 5100_GP1 Solar Gen Dataset
+# Solar Gen Dataset
